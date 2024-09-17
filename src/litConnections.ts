@@ -1,7 +1,6 @@
 import { LitNodeClient } from "@lit-protocol/lit-node-client";
 import { LitNetwork, AuthMethodScope } from "@lit-protocol/constants";
 import { LitContracts } from "@lit-protocol/contracts-sdk";
-import { litActionCode } from "./litAction";
 import * as ethers from "ethers";
 import Hash from "typestub-ipfs-only-hash";
 import {
@@ -9,6 +8,8 @@ import {
   LitPKPResource,
   LitActionResource,
 } from "@lit-protocol/auth-helpers";
+
+import { litActionCode } from "./litAction";
 
 export const connectToLitNodes = async () => {
   const litNodeClient = new LitNodeClient({

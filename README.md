@@ -1,13 +1,15 @@
 # Implementing Lit within a Telegram Mini App
-This code example demonstrates how to implement custom authentication and authorization for a PKP (Programmable Key Pair) within a Telegram Mini App. The end result is a PKP that can only be used to sign data if the Telegram Authentication data is valid and recent.
+This code example demonstrates how to implement custom authentication and authorization for a PKP (Programmable Key Pair) within a Telegram Mini App. The end result is a PKP that can only be used to sign data if the Telegram Authentication data is valid, recent, and belongs to a specific Telegram user.
 
-This implementation is based on the [custom-auth-telegram-example](https://github.com/LIT-Protocol/custom-auth-telegram-example), but the logic has been changed to work for a Telegram Mini App. We will be deploying the code example on Vercel. This can be changed depending on your implementation, but your Telegram Mini App will need an HTTPS endpoint.
+With Lit, you can create a Telegram Mini App that functions as a trading or social bot, restricted to a single Telegram user.
+
+This implementation is based on the [custom-auth-telegram-example](https://github.com/LIT-Protocol/custom-auth-telegram-example), but has been adapted to work as Telegram Mini App. We will be deploying the code example on Vercel. This can be changed depending on your implementation, but your Telegram Mini App will need a publicly accessible HTTPS endpoint.
 
 ## How it Works
 1. The user opens the Telegram Mini App. Through opening the Mini App window, we are able to get the user `initData` from the Telegram window.
 2. We verify the `initData` to ensure it is valid and recent. We do this by using the `isRecent` and `verifyInitData` functions from the [TelegramAuthHelpers.ts](src/telegramAuthHelpers.ts) file.
 3. The user connects their MetaMask wallet to the Mini App by clicking the "Connect to MetaMask" button.
-4. The user clicks the "Mint PKP" button to mint a new PKP and add the custom Telegram authorization to it.
+4. The user clicks the "Mint PKP" button to mint a new PKP and adds the custom Telegram auth Lit Action to it.
 5. The user clicks the "Get Session Signatures" button to get the session signatures for the PKP.
 
 ## How to Run the Example
@@ -17,6 +19,10 @@ To run this example, we will need to create a Telegram Mini App. To start, we'll
 1. Go to the [BotFather](https://t.me/BotFather).
 2. Use the `/newbot` command to create a new bot. Give the bot a name and a username.
 3. At this point you will be given a Bot Secret Token. We will need this later
+
+
+https://github.com/user-attachments/assets/e7864d8f-d38e-45b8-b31d-133790793d66
+
 
 ### Step 2: Clone the Repository
 The next step is to clone this repository, and push the code to a new Github repo that your account owns. This is a requirement because we need to give Vercel access to the repo in order to host it.
@@ -53,6 +59,10 @@ Then push the cloned code to your Github repo:
 git push -u origin main
 ```
 
+
+https://github.com/user-attachments/assets/26c4d45a-7dbc-4077-9639-64fa565f2162
+
+
 ### Step 3: Setup Vercel
 
 Create a free Vercel account [here](https://vercel.com/signup), if you don't already have one.
@@ -72,6 +82,10 @@ https://NAME_OF_YOUR_GITHUB_REPO.vercel.app/
 
 You should visit this URL in your browser and see the deployed code. Please keep in mind that the example will not work unless opened in a Telegram Mini App.
 
+
+https://github.com/user-attachments/assets/c76e8374-528b-4ffe-8dc5-76ef94c6f574
+
+
 ### Step 4: Set the Menu Button for the Bot
 
 Now that you have a working Telegram Mini App, you'll need to set the menu button for the bot. This can be done by:
@@ -83,13 +97,21 @@ Now that you have a working Telegram Mini App, you'll need to set the menu butto
 5. You'll also want to give the bot a domain. This is done using the `/setdomain` command. You'll be prompted to enter the username of the bot to set the domain for, enter the name you gave your bot that ends with `_bot` or `Bot`, prefixed with the `@` symbol e.g. `@Example_bot`.
 6. Enter the URL generated for your project by Vercel, after you receive the success message, you'll be all good to go!
 
+
+https://github.com/user-attachments/assets/7f08405a-037e-4c2a-b815-62dc706c8d96
+
+
 ### Step 5: Run the Example
 
 In order to successfully run the example, the Ethereum account that you connect to the web app using your browser wallet extension needs to have Lit test tokens. If you don't already have some, you can request some using [the faucet](https://chronicle-yellowstone-faucet.getlit.dev/).
 
-Your Mini App opened in Telegram should now look like:
+Your Mini App opened in Telegram Web should look like the video below. The MiniApp also works on mobile with the MetaMask mobile app.
 
-![image](https://github.com/user-attachments/assets/6bab315f-1db2-404c-bd59-602e0545f26d)
+
+
+https://github.com/user-attachments/assets/92ba6384-0eee-48e7-b399-df4d7ce41c41
+
+
 
 If your Mini App says `Valid: false`, there might be something wrong with the `VITE_TELEGRAM_BOT_SECRET` in Vercel. 
 
@@ -104,5 +126,4 @@ If you'd like to dive deeper into the code to understand how this example works,
 - [litAction.ts](./src/litAction.ts) contains the Lit Action code
   - The Lit Action is hardcoded to only communicate with the PKP Permission contract deployed on Chronicle Yellowstone at `0x60C1ddC8b9e38F730F0e7B70A2F84C1A98A69167`.
   - It's also hardcoded to only use the Auth Method with the type: `keccak256('Lit Developer Guide Telegram Auth Example')`.
-
 
