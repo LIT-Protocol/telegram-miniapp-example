@@ -1,19 +1,20 @@
 import { LitNodeClient } from "@lit-protocol/lit-node-client";
-import { LitNetwork, AuthMethodScope } from "@lit-protocol/constants";
+import { LIT_NETWORK, LIT_ABILITY, AUTH_METHOD_SCOPE } from "@lit-protocol/constants";
 import { LitContracts } from "@lit-protocol/contracts-sdk";
-import * as ethers from "ethers";
-import Hash from "typestub-ipfs-only-hash";
 import {
-  LitAbility,
   LitPKPResource,
   LitActionResource,
 } from "@lit-protocol/auth-helpers";
+import Hash from "typestub-ipfs-only-hash";
+import * as ethers from "ethers";
 
 import { litActionCode } from "./litAction";
 
+const LIT_NET = LIT_NETWORK.DatilTest;
+
 export const connectToLitNodes = async () => {
   const litNodeClient = new LitNodeClient({
-    litNetwork: LitNetwork.DatilTest,
+    litNetwork: LIT_NET,
     debug: false,
   });
   await litNodeClient.connect();
@@ -27,7 +28,7 @@ async function setupLitContracts(provider: any) {
 
   const litContracts = new LitContracts({
     signer,
-    network: LitNetwork.DatilTest,
+    network: LIT_NET,
   });
   await litContracts.connect();
 
@@ -40,7 +41,7 @@ export const mintNewPkp = async (provider: any) => {
   const pkp = (await litContracts.pkpNftContractUtils.write.mint()).pkp;
 
   await litContracts.addPermittedAction({
-    authMethodScopes: [AuthMethodScope.SignAnything],
+    authMethodScopes: [AUTH_METHOD_SCOPE.SignAnything],
     pkpTokenId: pkp.tokenId,
     ipfsId: hash,
   });
@@ -83,11 +84,11 @@ export const getSessionSignatures = async (
     resourceAbilityRequests: [
       {
         resource: new LitPKPResource("*"),
-        ability: LitAbility.PKPSigning,
+        ability: LIT_ABILITY.PKPSigning,
       },
       {
         resource: new LitActionResource("*"),
-        ability: LitAbility.LitActionExecution,
+        ability: LIT_ABILITY.LitActionExecution,
       },
     ],
     expiration: new Date(Date.now() + 1000 * 60 * 10).toISOString(), // 10 minutes
